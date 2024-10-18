@@ -7,24 +7,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Post } from '../../posts/entities/post.entity';
 import { UserRole } from './../../users-roles/entities/users-role.entity';
 
-@Entity({ name: 'users' })
-export class User {
+@Entity({ name: 'roles' })
+export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
-  email: string;
-
   @Column({ type: 'varchar', length: 255 })
-  password: string; // encrypt
+  name: string;
 
-  @OneToMany(() => Post, (posts) => posts.user)
-  posts: Post[];
-
-  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  @OneToMany(() => UserRole, (userRole) => userRole.role)
   usersRoles: UserRole[];
 
   // timestamps

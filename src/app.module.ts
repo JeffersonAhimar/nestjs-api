@@ -7,6 +7,9 @@ import { DatabaseModule } from './database/database.module';
 
 import { environments } from './environments';
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
+import { RolesModule } from './roles/roles.module';
+import { UsersRolesModule } from './users-roles/users-roles.module';
 import config from './config';
 
 @Module({
@@ -24,6 +27,9 @@ import config from './config';
     }),
     DatabaseModule,
     UsersModule,
+    PostsModule,
+    RolesModule,
+    UsersRolesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
