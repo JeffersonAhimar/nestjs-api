@@ -21,7 +21,7 @@ export class User {
   @Column({ type: 'varchar', length: 255 })
   password: string; // encrypt
 
-  @OneToMany(() => Post, (posts) => posts.user)
+  @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
   @OneToMany(() => UserRole, (userRole) => userRole.user)
