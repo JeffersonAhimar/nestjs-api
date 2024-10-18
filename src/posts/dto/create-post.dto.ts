@@ -1,9 +1,9 @@
 import { PartialType } from '@nestjs/swagger';
 
 export class CreatePostDto {
-  title: string;
-  content: string;
-  userId: number;
+  readonly title: string;
+  readonly content: string;
+  readonly userId: number;
 }
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {}

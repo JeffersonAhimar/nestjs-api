@@ -6,7 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
+
 import { UsersRolesService } from './users-roles.service';
 import {
   CreateUserRoleDto,
@@ -18,8 +20,8 @@ export class UsersRolesController {
   constructor(private readonly usersRolesService: UsersRolesService) {}
 
   @Post()
-  create(@Body() createUsersRoleDto: CreateUserRoleDto) {
-    return this.usersRolesService.create(createUsersRoleDto);
+  create(@Body() payload: CreateUserRoleDto) {
+    return this.usersRolesService.create(payload);
   }
 
   @Get()
@@ -28,20 +30,20 @@ export class UsersRolesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersRolesService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.usersRolesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateUsersRoleDto: UpdateUserRoleDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateUserRoleDto,
   ) {
-    return this.usersRolesService.update(+id, updateUsersRoleDto);
+    return this.usersRolesService.update(id, payload);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersRolesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersRolesService.remove(id);
   }
 }

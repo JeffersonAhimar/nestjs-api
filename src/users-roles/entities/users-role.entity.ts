@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -15,10 +16,16 @@ export class UserRole {
   id: number;
 
   @ManyToOne(() => User, (user) => user.usersRoles)
-  user: User;
+  user: User; //userId
+
+  @Column({ type: 'int' })
+  userId: number;
 
   @ManyToOne(() => Role, (role) => role.usersRoles)
-  role: Role;
+  role: Role; //roleId
+
+  @Column({ type: 'int' })
+  roleId: number;
 
   // timestamps
   @CreateDateColumn()
