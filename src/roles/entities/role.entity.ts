@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { UserRole } from './../../users-roles/entities/users-role.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'roles' })
 export class Role {
@@ -21,9 +22,11 @@ export class Role {
   usersRoles: UserRole[];
 
   // timestamps
-  @CreateDateColumn()
+  @Exclude()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Exclude()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

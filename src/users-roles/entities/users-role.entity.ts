@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -9,6 +10,7 @@ import {
 
 import { User } from './../../users/entities/user.entity';
 import { Role } from './../../roles/entities/role.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users_roles' })
 export class UserRole {
@@ -16,21 +18,27 @@ export class UserRole {
   id: number;
 
   @ManyToOne(() => User, (user) => user.usersRoles)
-  user: User; //userId
+  @JoinColumn({ name: 'user_id' }) // userId -> user_id
+  user: User;
 
-  @Column({ type: 'int' })
+  // optional
+  @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
   @ManyToOne(() => Role, (role) => role.usersRoles)
-  role: Role; //roleId
+  @JoinColumn({ name: 'role_id' }) // roleId -> role_id
+  role: Role;
 
-  @Column({ type: 'int' })
+  // optional
+  @Column({ name: 'role_id', type: 'int' })
   roleId: number;
 
   // timestamps
-  @CreateDateColumn()
+  @Exclude()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Exclude()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

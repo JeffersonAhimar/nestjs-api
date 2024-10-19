@@ -9,6 +9,7 @@ import {
 
 import { Post } from '../../posts/entities/post.entity';
 import { UserRole } from './../../users-roles/entities/users-role.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -28,9 +29,11 @@ export class User {
   usersRoles: UserRole[];
 
   // timestamps
-  @CreateDateColumn()
+  @Exclude()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Exclude()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

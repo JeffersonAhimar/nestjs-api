@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from '../../users/entities/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'posts' })
 export class Post {
@@ -21,12 +23,19 @@ export class Post {
   content: string;
 
   @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn({ name: 'user_id' }) // optional (camelCase -> snake_case)
   user: User;
 
+  // optional
+  @Column({ name: 'user_id', type: 'int' })
+  userId: number;
+
   // timestamps
-  @CreateDateColumn()
+  @Exclude()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Exclude()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
