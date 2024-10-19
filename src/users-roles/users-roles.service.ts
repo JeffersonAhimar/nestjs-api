@@ -37,6 +37,17 @@ export class UsersRolesService {
     return userRole;
   }
 
+  async findOneWithRelations(id: number) {
+    const userRole = await this.userRoleRepository.findOne({
+      where: { id },
+      relations: ['user', 'role'],
+    });
+    if (!userRole) {
+      throw new NotFoundException('UserRole not found');
+    }
+    return userRole;
+  }
+
   async update(id: number, updateUserRoleDto: UpdateUserRoleDto) {
     const userRole = await this.findOne(id);
 

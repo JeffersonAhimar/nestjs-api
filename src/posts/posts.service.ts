@@ -36,6 +36,17 @@ export class PostsService {
     return post;
   }
 
+  async findOneWithRelations(id: number) {
+    const post = await this.postRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
+  }
+
   async update(id: number, updatePostDto: UpdatePostDto) {
     const post = await this.findOne(id);
 
