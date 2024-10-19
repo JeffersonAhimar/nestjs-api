@@ -19,6 +19,7 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password: string; // encrypt
 
