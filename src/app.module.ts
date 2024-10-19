@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { RolesModule } from './roles/roles.module';
 import { UsersRolesModule } from './users-roles/users-roles.module';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 
 @Module({
@@ -30,6 +31,7 @@ import config from './config';
     PostsModule,
     RolesModule,
     UsersRolesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

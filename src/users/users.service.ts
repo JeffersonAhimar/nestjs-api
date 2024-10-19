@@ -29,6 +29,10 @@ export class UsersService {
     return user;
   }
 
+  findByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     this.userRepository.merge(user, updateUserDto);
