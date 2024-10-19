@@ -17,7 +17,10 @@ export class UserRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.usersRoles)
+  @ManyToOne(() => User, (user) => user.usersRoles, {
+    onUpdate: 'RESTRICT',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'user_id' }) // userId -> user_id
   user: User;
 
@@ -25,7 +28,10 @@ export class UserRole {
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
-  @ManyToOne(() => Role, (role) => role.usersRoles)
+  @ManyToOne(() => Role, (role) => role.usersRoles, {
+    onUpdate: 'RESTRICT', // default: restrict
+    onDelete: 'RESTRICT', // default: restrict
+  })
   @JoinColumn({ name: 'role_id' }) // roleId -> role_id
   role: Role;
 

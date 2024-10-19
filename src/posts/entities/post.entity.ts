@@ -22,7 +22,10 @@ export class Post {
   @Column({ type: 'text' })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, {
+    onUpdate: 'RESTRICT', // default: restrict
+    onDelete: 'RESTRICT', // default: restrict
+  })
   @JoinColumn({ name: 'user_id' }) // optional (camelCase -> snake_case)
   user: User;
 
