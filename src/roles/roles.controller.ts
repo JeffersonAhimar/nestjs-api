@@ -8,16 +8,18 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+
 import { RolesService } from './roles.service';
-import { CreateRoleDto, UpdateRoleDto } from './dto/create-role.dto';
+import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  create(@Body() payload: CreateRoleDto) {
-    return this.rolesService.create(payload);
+  create(@Body() createRoleDto: CreateRoleDto) {
+    return this.rolesService.create(createRoleDto);
   }
 
   @Get()
@@ -33,13 +35,13 @@ export class RolesController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateRoleDto,
+    @Body() updateRoleDto: UpdateRoleDto,
   ) {
-    return this.rolesService.update(id, payload);
+    return this.rolesService.update(id, updateRoleDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.rolesService.remove(+id);
+    return this.rolesService.remove(id);
   }
 }

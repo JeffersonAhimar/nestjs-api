@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Post } from './entities/post.entity';
-import { CreatePostDto, UpdatePostDto } from './dto/create-post.dto';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -13,12 +14,13 @@ export class PostsService {
     private usersService: UsersService,
   ) {}
 
-  async create(data: CreatePostDto) {
-    const newPost = this.postRepository.create(data);
-    if (data.userId) {
-      const user = await this.usersService.findOne(data.userId);
-      newPost.user = user;
+  async create(createPostDto: CreatePostDto) {
+    const newPost = this.postRepository.create(createPostDto);
+
+    if (createPostDto.userId) {
+      await this.usersService.findOne(createPostDto.userId);
     }
+
     return this.postRepository.save(newPost);
   }
 
@@ -27,23 +29,21 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    const post = await this.postRepository.findOne({
-      where: { id },
-      relations: ['user'],
-    });
+    const post = await this.postRepository.findOne({ where: { id } });
     if (!post) {
       throw new NotFoundException('Post not found');
     }
     return post;
   }
 
-  async update(id: number, changes: UpdatePostDto) {
+  async update(id: number, updatePostDto: UpdatePostDto) {
     const post = await this.findOne(id);
-    if (changes.userId) {
-      const user = await this.usersService.findOne(changes.userId);
-      post.user = user;
+
+    if (updatePostDto.userId) {
+      await this.usersService.findOne(updatePostDto.userId);
     }
-    this.postRepository.merge(post, changes);
+
+    this.postRepository.merge(post, updatePostDto);
     return this.postRepository.save(post);
   }
 

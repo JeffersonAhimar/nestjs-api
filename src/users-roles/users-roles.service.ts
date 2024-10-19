@@ -3,10 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { UserRole } from './entities/users-role.entity';
-import {
-  CreateUserRoleDto,
-  UpdateUserRoleDto,
-} from './dto/create-user-role.dto';
+import { CreateUserRoleDto } from './dto/create-user-role.dto';
+import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UsersService } from 'src/users/users.service';
 import { RolesService } from 'src/roles/roles.service';
 
@@ -19,11 +17,11 @@ export class UsersRolesService {
     private rolesService: RolesService,
   ) {}
 
-  async create(data: CreateUserRoleDto) {
-    await this.usersService.findOne(data.userId);
-    await this.rolesService.findOne(data.roleId);
+  async create(createUserRoleDto: CreateUserRoleDto) {
+    await this.usersService.findOne(createUserRoleDto.userId);
+    await this.rolesService.findOne(createUserRoleDto.roleId);
 
-    const newUserRole = this.userRoleRepository.create(data);
+    const newUserRole = this.userRoleRepository.create(createUserRoleDto);
     return this.userRoleRepository.save(newUserRole);
   }
 
@@ -32,29 +30,24 @@ export class UsersRolesService {
   }
 
   async findOne(id: number) {
-    const userRole = await this.userRoleRepository.findOne({
-      where: { id },
-      relations: ['user', 'role'],
-    });
+    const userRole = await this.userRoleRepository.findOne({ where: { id } });
     if (!userRole) {
       throw new NotFoundException('UserRole not found');
     }
     return userRole;
   }
 
-  async update(id: number, changes: UpdateUserRoleDto) {
+  async update(id: number, updateUserRoleDto: UpdateUserRoleDto) {
     const userRole = await this.findOne(id);
 
-    if (changes.userId) {
-      const user = await this.usersService.findOne(changes.userId);
-      userRole.user = user;
+    if (updateUserRoleDto.userId) {
+      await this.usersService.findOne(updateUserRoleDto.userId);
     }
-    if (changes.roleId) {
-      const role = await this.rolesService.findOne(changes.roleId);
-      userRole.role = role;
+    if (updateUserRoleDto.roleId) {
+      await this.rolesService.findOne(updateUserRoleDto.roleId);
     }
 
-    this.userRoleRepository.merge(userRole, changes);
+    this.userRoleRepository.merge(userRole, updateUserRoleDto);
     return this.userRoleRepository.save(userRole);
   }
 
