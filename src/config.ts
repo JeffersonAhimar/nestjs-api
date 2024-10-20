@@ -21,5 +21,6 @@ export default registerAs('config', () => {
       dbName: process.env.MYSQL_DB,
     },
     apiKey: process.env.API_KEY,
+    jwtSecret: process.env.JWT_SECRET,
   };
 });
