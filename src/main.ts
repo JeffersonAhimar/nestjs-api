@@ -3,8 +3,13 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // 1. Global Pipes
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // ignore
@@ -15,8 +20,16 @@ async function bootstrap() {
     }),
   );
 
+  // 2. Global Interceptors
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // to transform data before return, eg. exclude
 
+  // 3. Global Guards
+  app.useGlobalGuards(
+    app.get(JwtAuthGuard), // authentication for all controllers - @Public() to pass
+    app.get(RolesGuard), // role-based access control
+  );
+
+  // 4. Swagger Config
   const config = new DocumentBuilder()
     .setTitle('API')
     .setDescription('JeffersonAhimar')

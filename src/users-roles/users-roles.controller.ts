@@ -7,12 +7,9 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleEnum } from 'src/common/models/role.enum';
 
@@ -20,7 +17,7 @@ import { UsersRolesService } from './users-roles.service';
 import { CreateUserRoleDto } from './dto/create-user-role.dto';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
-@UseGuards(JwtAuthGuard, RolesGuard) // in order from left to right
+// @UseGuards(JwtAuthGuard, RolesGuard) // in order from left to right
 @ApiTags('users-roles')
 @Controller('users-roles')
 export class UsersRolesController {
@@ -32,6 +29,7 @@ export class UsersRolesController {
     return this.usersRolesService.create(createUserRoleDto);
   }
 
+  @Roles(RoleEnum.CUSTOMER, RoleEnum.ADMIN)
   @Get()
   findAll() {
     return this.usersRolesService.findAll();

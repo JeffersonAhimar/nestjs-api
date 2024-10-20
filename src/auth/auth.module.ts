@@ -5,6 +5,8 @@ import { ConfigType } from '@nestjs/config';
 
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
@@ -27,7 +29,14 @@ import config from 'src/config';
       },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtAuthGuard,
+    RolesGuard,
+  ],
   controllers: [AuthController],
+  exports: [JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}
