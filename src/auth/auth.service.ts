@@ -25,10 +25,10 @@ export class AuthService {
   }
 
   generateJWT(user: User) {
-    const payload: PayloadToken = { sub: user.id };
+    const roles = user.usersRoles.map((userRole) => userRole.role.name);
+    const payload: PayloadToken = { sub: user.id, email: user.email, roles };
     return {
       access_token: this.jwtService.sign(payload),
-      user,
     };
   }
 }
