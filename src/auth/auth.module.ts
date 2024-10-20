@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigType } from '@nestjs/config';
 
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
-import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import config from 'src/config';
-import { ConfigType } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,13 +20,13 @@ import { ConfigType } from '@nestjs/config';
         return {
           secret: configService.jwtSecret,
           signOptions: {
-            expiresIn: '5m', // 30 (seconds) - 1m (minutes) - 1h (hours) - 1d (days)
+            expiresIn: '2m', // 30 (seconds) - 1m (minutes) - 1h (hours) - 1d (days)
           },
         };
       },
     }),
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

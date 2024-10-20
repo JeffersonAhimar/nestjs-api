@@ -6,13 +6,13 @@ export default registerAs('config', () => {
       name: process.env.DATABASE_NAME,
       port: process.env.DATABASE_PORT,
     },
-    postgres: {
-      host: process.env.POSTGRES_HOST,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      port: parseInt(process.env.POSTGRES_PORT),
-      dbName: process.env.POSTGRES_DB,
-    },
+    // postgres: {
+    //   host: process.env.POSTGRES_HOST,
+    //   user: process.env.POSTGRES_USER,
+    //   password: process.env.POSTGRES_PASSWORD,
+    //   port: parseInt(process.env.POSTGRES_PORT),
+    //   dbName: process.env.POSTGRES_DB,
+    // },
     mysql: {
       host: process.env.MYSQL_HOST,
       user: process.env.MYSQL_USER,
