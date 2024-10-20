@@ -25,8 +25,7 @@ export class AuthService {
   }
 
   generateJWT(user: User) {
-    const roles = user.usersRoles.map((userRole) => userRole.role.name);
-    const payload: PayloadToken = { sub: user.id, email: user.email, roles };
+    const payload: PayloadToken = { sub: user.id, email: user.email };
     return {
       access_token: this.jwtService.sign(payload),
     };

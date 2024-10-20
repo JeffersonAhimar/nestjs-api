@@ -1,17 +1,18 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { PayloadToken } from '../models/token.model';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private usersService: UsersService,
+  ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.get<string[]>(
       ROLES_KEY,
       context.getHandler(),
@@ -23,6 +24,14 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user as PayloadToken;
 
-    return requiredRoles.some((role) => user.roles?.includes(role));
+    // get roles from db
+    const userWithRoles = await this.usersService.findOneWithRoles(user.sub);
+    // format roles
+    const userRoles = userWithRoles.usersRoles.map(
+      (userRole) => userRole.role.name,
+    );
+
+    // validate roles
+    return requiredRoles.some((role) => userRoles.includes(role));
   }
 }

@@ -29,11 +29,23 @@ export class UsersService {
     return user;
   }
 
-  findByEmail(email: string) {
-    return this.userRepository.findOne({
-      where: { email },
-      relations: ['usersRoles', 'usersRoles.role'], // get roles
+  async findOneWithRoles(id: number) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['usersRoles', 'usersRoles.role'],
     });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  findByEmail(email: string) {
+    const user = this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
