@@ -6,6 +6,8 @@ import { ConfigType } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 
 import { AuthService } from './auth.service';
@@ -17,13 +19,14 @@ import config from 'src/config';
   imports: [
     UsersModule,
     PassportModule,
+    // global config for jwt
     JwtModule.registerAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
         return {
           secret: configService.jwtSecret,
           signOptions: {
-            expiresIn: '2m', // 30 (seconds) - 1m (minutes) - 1h (hours) - 1d (days)
+            expiresIn: configService.jwtExpiration, // 30 (seconds) - 1m (minutes) - 1h (hours) - 1d (days)
           },
         };
       },
@@ -34,6 +37,8 @@ import config from 'src/config';
     LocalStrategy,
     JwtStrategy,
     JwtAuthGuard,
+    JwtRefreshStrategy,
+    JwtRefreshAuthGuard,
     RolesGuard,
   ],
   controllers: [AuthController],

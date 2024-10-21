@@ -2,10 +2,10 @@ import { registerAs } from '@nestjs/config';
 
 export default registerAs('config', () => {
   return {
-    database: {
-      name: process.env.DATABASE_NAME,
-      port: process.env.DATABASE_PORT,
-    },
+    // database: {
+    //   name: process.env.DATABASE_NAME,
+    //   port: parseInt(process.env.DATABASE_PORT),
+    // },
     // postgres: {
     //   host: process.env.POSTGRES_HOST,
     //   user: process.env.POSTGRES_USER,
@@ -22,5 +22,8 @@ export default registerAs('config', () => {
     },
     apiKey: process.env.API_KEY,
     jwtSecret: process.env.JWT_SECRET,
+    jwtExpiration: process.env.JWT_EXPIRATION,
+    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
+    jwtRefreshExpiration: process.env.JWT_REFRESH_EXPIRATION,
   };
 });
