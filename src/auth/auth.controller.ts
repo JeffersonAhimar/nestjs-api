@@ -16,14 +16,20 @@ export class AuthController {
   @Post('login')
   async login(@Request() req) {
     const user = req.user as User;
-    return this.authService.generateJWT(user);
+    return this.authService.login(user);
   }
 
-  @UseGuards(JwtRefreshAuthGuard)
   @Public()
+  @UseGuards(JwtRefreshAuthGuard)
   @Post('refresh')
-  async refreshToken(@Request() req) {
+  async refresh(@Request() req) {
     const user = req.user as User;
-    return this.authService.refreshToken(user.id);
+    return this.authService.refresh(user.id);
+  }
+
+  @Post('logout')
+  async logout(@Request() req) {
+    const user = req.user as User;
+    return this.authService.logout(user.id);
   }
 }
