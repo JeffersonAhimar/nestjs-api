@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { User } from '../../users/entities/user.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'posts' })
 export class Post {

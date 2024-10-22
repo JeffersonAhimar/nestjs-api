@@ -2,14 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { Post } from '../../posts/entities/post.entity';
 import { UserRole } from './../../users-roles/entities/users-role.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -30,6 +31,7 @@ export class User {
   //   this.password = await bcrypt.hash(this.password, 10);
   // }
 
+  @Index() // selected frequently
   @Exclude()
   @Column({
     name: 'refresh_token',

@@ -6,16 +6,16 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { UserRole } from './../../users-roles/entities/users-role.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'roles' })
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
   @OneToMany(() => UserRole, (userRole) => userRole.role)

@@ -60,4 +60,4 @@ mysql_data/
 
 # env files
 .env.prod
-.env.stag
+.env.test

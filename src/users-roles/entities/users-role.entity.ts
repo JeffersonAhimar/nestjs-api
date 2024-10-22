@@ -7,10 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { User } from './../../users/entities/user.entity';
 import { Role } from './../../roles/entities/role.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users_roles' })
 export class UserRole {
