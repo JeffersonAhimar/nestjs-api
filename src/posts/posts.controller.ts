@@ -16,7 +16,6 @@ import { RoleEnum } from 'src/common/enums/role.enum';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Public } from 'src/auth/decorators/public.decorator';
 
 // JwtAuthGuard(@Public) -> RolesGuard(@Roles) -> ...
 @Roles(RoleEnum.ADMIN)
@@ -30,7 +29,6 @@ export class PostsController {
     return this.postsService.create(createPostDto);
   }
 
-  @Public()
   @Get()
   findAll() {
     return this.postsService.findAll();
