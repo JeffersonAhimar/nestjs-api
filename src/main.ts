@@ -5,6 +5,8 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { ConfigType } from '@nestjs/config';
+import config from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -31,14 +33,16 @@ async function bootstrap() {
   );
 
   // 4. Swagger Config
-  const config = new DocumentBuilder()
+  const swaggerConfig = new DocumentBuilder()
     .setTitle('API')
     .setDescription('JeffersonAhimar')
     .setVersion('1.0')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
+  // port with env variables
+  const configService = app.get<ConfigType<typeof config>>(config.KEY);
+  await app.listen(configService.port);
 }
 bootstrap();
