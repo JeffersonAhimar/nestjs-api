@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { PayloadToken } from '../models/token.model';
 import { UsersService } from 'src/users/users.service';
-import { RoleEnum } from 'src/common/models/role.enum';
+import { RoleEnum } from 'src/common/enums/role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -14,9 +14,10 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.get<RoleEnum[]>(
+    // const requiredRoles = this.reflector.get<RoleEnum[]>(ROLES_KEY,context.getHandler(),); // only works on methods, not top of @controller
+    const requiredRoles = this.reflector.getAllAndOverride<RoleEnum[]>(
       ROLES_KEY,
-      context.getHandler(),
+      [context.getHandler(), context.getClass()],
     );
     if (!requiredRoles) {
       return true; // no required roles = allow access
@@ -32,7 +33,10 @@ export class RolesGuard implements CanActivate {
       (userRole) => userRole.role.name,
     );
 
+    const hasRequiredRole = requiredRoles.some((role) =>
+      userRoles.includes(role),
+    );
     // validate roles
-    return requiredRoles.some((role) => userRoles.includes(role));
+    return hasRequiredRole;
   }
 }

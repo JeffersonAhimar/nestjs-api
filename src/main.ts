@@ -23,7 +23,8 @@ async function bootstrap() {
   // 2. Global Interceptors
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // to transform data before return, eg. exclude
 
-  // 3. Global Guards
+  // 3. Global Guards (execute in order from left to right) JwtAuthGuard -> RolesGuard -> ...
+
   app.useGlobalGuards(
     app.get(JwtAuthGuard), // authentication for all controllers - @Public() to pass
     app.get(RolesGuard), // role-based access control

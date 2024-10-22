@@ -14,6 +14,7 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 
+// JwtAuthGuard(@Public) -> RolesGuard(@Roles) -> ...
 @ApiTags('roles')
 @Controller('roles')
 export class RolesController {

@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from 'src/auth/decorators/public.decorator';
 
+// JwtAuthGuard(@Public) -> RolesGuard(@Roles) -> ...
 @ApiTags('users')
 @Controller('users')
 export class UsersController {

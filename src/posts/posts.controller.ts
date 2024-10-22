@@ -10,15 +10,16 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { Public } from 'src/auth/decorators/public.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RoleEnum } from 'src/common/models/role.enum';
+import { RoleEnum } from 'src/common/enums/role.enum';
 
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
-// @UseGuards(RolesGuard) // in order from left to right
+// JwtAuthGuard(@Public) -> RolesGuard(@Roles) -> ...
+@Roles(RoleEnum.ADMIN)
 @ApiTags('posts')
 @Controller('posts')
 export class PostsController {
@@ -35,7 +36,7 @@ export class PostsController {
     return this.postsService.findAll();
   }
 
-  @Roles(RoleEnum.ADMIN, RoleEnum.CUSTOMER)
+  // @Roles(RoleEnum.ADMIN, RoleEnum.CUSTOMER) // overwrites the roles specified on the top
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.findOne(id);
