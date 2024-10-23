@@ -23,7 +23,7 @@ export class Mysql1451ExceptionFilter implements ExceptionFilter {
     const driverError = exception.driverError as TypeORMQueryError;
 
     response.status(status).json({
-      status,
+      statusCode: status,
       message: driverError.sqlMessage,
     });
   }
